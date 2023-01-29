@@ -15,7 +15,7 @@ namespace MyUTILITIES_CS
         private static int _Counter = 0;
         private static string Ending = ".txt";
         private static string OriginFileName="";
-        //cant create global date time intiger
+        //cant create global date time variable
         private static string Date()
         {
             string date = $"{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}";
@@ -24,16 +24,16 @@ namespace MyUTILITIES_CS
         //create the file log
         public void Init(string fileName)
         {
-            if(_Counter == 0)
+            if (_Counter == 0)
             {
                 _FileName = fileName + Ending;
                 OriginFileName = fileName;
+                LogCheckHoseKeeping();
             }
             else
             {
                 _FileName = Path.GetFileNameWithoutExtension(fileName + Ending) + _Counter.ToString() + Ending;
             }
-            
         }
         public void LogEvent(string msg)
         {
@@ -60,21 +60,18 @@ namespace MyUTILITIES_CS
         public void LogCheckHoseKeeping()
         {
             FileInfo fileInfo= new FileInfo($"{OriginFileName}{Ending}");
-            while(fileInfo.Exists)
+            if (fileInfo.Exists)
             {
-                fileInfo = new FileInfo($"{OriginFileName}{_Counter}{Ending}");
-                if (fileInfo.Length >= _MaxSize)
+                while (fileInfo.Length >= _MaxSize)
                 {
-                    //if the size is too big i create new file with bigger number
+                    //if the size is too big create new file with bigger number
                     _Counter++;
                     _FileName = OriginFileName;
-                    Init(_FileName);
+                    fileInfo = new FileInfo($"{OriginFileName}{_Counter}{Ending}");
                 }
-                else
-                {
-                    return;
-                }
-            } 
+            }
+            else return;
+            Init(_FileName);
         }
     }
 }
