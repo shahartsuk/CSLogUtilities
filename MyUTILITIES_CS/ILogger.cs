@@ -8,7 +8,7 @@ namespace MyUTILITIES_CS
 {
     public interface ILogger
     {
-        void Init(string name);
+        void Init();
         void LogEvent(string msg);
         void LogError(string msg);
         void LogException(string msg, Exception exce);
