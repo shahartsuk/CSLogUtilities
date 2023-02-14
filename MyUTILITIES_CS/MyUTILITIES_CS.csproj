@@ -47,6 +47,7 @@
     <Compile Include="LogFile.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="LogItem.cs" />
     <Compile Include="LogNone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

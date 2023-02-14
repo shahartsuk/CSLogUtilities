@@ -1,0 +1,7 @@
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\bin\Debug\MyUTILITIES_CS.dll.config
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\bin\Debug\MyUTILITIES_CS.dll
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\bin\Debug\MyUTILITIES_CS.pdb
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\obj\Debug\MyUTILITIES_CS.csproj.AssemblyReference.cache
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\obj\Debug\MyUTILITIES_CS.csproj.CoreCompileInputs.cache
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\obj\Debug\MyUTILITIES_CS.dll
+C:\Users\97254\Source\Repos\CSLogUtilities\MyUTILITIES_CS\obj\Debug\MyUTILITIES_CS.pdb

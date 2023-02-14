@@ -8,7 +8,7 @@ namespace MyUTILITIES_CS
 {
     public class Logger
     {
-        static ILogger myLog;
+        public ILogger myLog;
         //public enum ProviderType
         //{
         //    File =1,

@@ -3,56 +3,81 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyUTILITIES_CS
 {
     public class LogFile : ILogger
     {
-        static string _FileName = "log";
+        Queue<LogItem> logQueue = new Queue<LogItem>();
+        Task Queuetask;
+        Task CheckHoseKeepingTask;
+        LogItem logItem;
+        string _FileName = "log";
             //ConfigurationManager.AppSettings["fileName"];
-        static int _MaxSize = 5000000;
-        static int _Counter = 0;
-        static string Ending = ".txt";
-        static string OriginFileName= "log";
+        int _MaxSize = 5000000;
+        int _Counter = 0;
+        string Ending = ".txt";
+        string OriginFileName= "log";
+        bool Stop = false;
+        bool CheckStop = false;
         //cant create global date time variable
-        static string Date()
-        {
-            DateTime dateTime = DateTime.Now;
-            string date = $"{dateTime.Year}/{dateTime.Month}/{dateTime.Day}-{dateTime.Hour}-{dateTime.Minute}-{dateTime.Second}";
-            return date;
-        } 
         //create the file log
         public void Init()
         {
-            LogCheckHoseKeeping();
+            CheckHoseKeepingTask = Task.Run(() =>
+            {
+                while (!CheckStop)
+                {
+                    LogCheckHoseKeeping();
+
+                    Thread.Sleep(1000 * 60 * 5); //5 min
+                }
+            });
+            Queuetask = Task.Run(() =>
+            {
+                while (!Stop)
+                {
+
+                    LogItem item = logQueue.Dequeue();
+                    WriteToFile(item);
+
+                    Thread.Sleep(1000);
+                }
+            });
+
+            
         }
-        public void WriteToFile(string msg,string logLevel, Exception exce)
+        public void WriteToFile(LogItem item)
         {
             using (StreamWriter file = new StreamWriter(_FileName))
             {
-                if (exce == null)
+                if (item.exception == null)
                 {
-                    file.WriteLine($"{logLevel} - {Date()}-{msg}");
+                    file.WriteLine($"{item.Date} - {item.Message}");
                 }
                 else
                 {
-                    file.WriteLine($"{Date()}-{msg}-{logLevel}:{exce.Message}");
+                    file.WriteLine($"{item.Date} - {item.Message}:{item.exception.Message}");
                 }
             }
                 
         }
         public void LogEvent(string msg)
         {
-            WriteToFile(msg, "Event", null);
+            logItem = new LogItem { Message = $"Event - {msg}"};
+            logQueue.Enqueue(logItem);
         }
         public void LogError(string msg)
         {
-            WriteToFile(msg, "Error", null);
+            logItem = new LogItem { Message = $"Error - {msg}"};
+            logQueue.Enqueue(logItem);
         }
         public void LogException(string msg, Exception exce)
         {
-            WriteToFile(msg, "Exception", exce);
+            logItem = new LogItem { Message = $"Exception - {msg}", exception = exce};
+            logQueue.Enqueue(logItem);
         }
         //cheking if the file log already exists and his size
         public void LogCheckHoseKeeping()
